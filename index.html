@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acesse Seu Material Gratuito</title>
+  <meta name="description" content="Acesse o material exclusivo e gratuito que vai transformar sua mentalidade e seus resultados." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Syne:wght@700;800&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-deep:    #050810;
+      --bg-card:    #0d1120;
+      --bg-input:   #111827;
+      --cyan:       #00e5ff;
+      --cyan-dim:   #00b4cc;
+      --purple:     #7c3aed;
+      --purple-dim: #5b21b6;
+      --text-hi:    #f0f4ff;
+      --text-mid:   #94a3b8;
+      --text-lo:    #475569;
+      --border:     rgba(0,229,255,0.12);
+      --glow-cyan:  0 0 40px rgba(0,229,255,0.18);
+      --glow-btn:   0 0 30px rgba(0,229,255,0.4);
+      --radius:     16px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg-deep);
+      color: var(--text-hi);
+      font-family: 'Inter', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    /* ───── BACKGROUND GLOW ───── */
+    body::before {
+      content: '';
+      position: fixed;
+      top: -30%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 900px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(0,229,255,0.07) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    body::after {
+      content: '';
+      position: fixed;
+      bottom: -10%;
+      right: -10%;
+      width: 600px;
+      height: 600px;
+      background: radial-gradient(ellipse, rgba(124,58,237,0.1) 0%, transparent 70%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ───── GRID LINES ───── */
+    .grid-overlay {
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(0,229,255,0.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0,229,255,0.03) 1px, transparent 1px);
+      background-size: 60px 60px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ───── WRAPPER ───── */
+    .wrapper {
+      position: relative;
+      z-index: 1;
+      max-width: 1200px; /* Esticado para ocupar a tela toda */
+      margin: 0 auto;
+      padding: 40px 40px 80px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start; /* Tudo começa na esquerda extrema */
+    }
+
+    /* ───── BADGE ───── */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(0,229,255,0.08);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 999px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--cyan);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 40px;
+      animation: fadeSlideDown 0.6s ease both;
+    }
+    .badge::before {
+      content: '';
+      width: 7px;
+      height: 7px;
+      background: var(--cyan);
+      border-radius: 50%;
+      box-shadow: 0 0 8px var(--cyan);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.3; }
+    }
+
+    /* ───── HERO TEXT ───── */
+    .hero-headline {
+      font-family: 'Syne', sans-serif;
+      font-size: clamp(32px, 5vw, 64px); /* Gigante e esticado */
+      font-weight: 800;
+      line-height: 1.1;
+      text-align: left;
+      width: 100%;
+      margin-bottom: 24px;
+      animation: fadeSlideDown 0.7s 0.1s ease both;
+    }
+    .hero-headline .sub-part {
+      display: block;
+      text-align: right; /* Joga a segunda linha pro canto direito */
+      font-size: clamp(24px, 4vw, 48px);
+      color: var(--text-mid);
+      margin-top: 10px;
+    }
+    .hero-headline span {
+      background: linear-gradient(90deg, var(--cyan), #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-sub {
+      font-size: 16px;
+      color: var(--text-mid);
+      text-align: left;
+      line-height: 1.7;
+      max-width: 600px;
+      margin-bottom: 50px;
+      animation: fadeSlideDown 0.7s 0.2s ease both;
+    }
+
+    /* ───── BOOK MOCKUP ───── */
+    .book-wrap {
+      position: relative;
+      margin-bottom: 36px;
+      animation: fadeSlideDown 0.8s 0.25s ease both;
+    }
+    .book {
+      width: 180px;
+      height: 245px;
+      background: linear-gradient(135deg, #1e2a4a, #0f1729);
+      border-radius: 4px 12px 12px 4px;
+      border: 1px solid var(--border);
+      box-shadow:
+        var(--glow-cyan),
+        -8px 12px 40px rgba(0,0,0,0.6),
+        inset 0 0 0 1px rgba(255,255,255,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .book::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0;
+      width: 8px;
+      height: 100%;
+      background: linear-gradient(180deg, var(--cyan-dim), var(--purple-dim));
+      border-radius: 4px 0 0 4px;
+    }
+    .book::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 70% 20%, rgba(0,229,255,0.08) 0%, transparent 60%);
+    }
+    .book-icon {
+      font-size: 36px;
+      filter: drop-shadow(0 0 12px var(--cyan));
+      position: relative;
+      z-index: 1;
+    }
+    .book-title {
+      font-size: 13px;
+      font-weight: 700;
+      text-align: center;
+      color: var(--text-hi);
+      line-height: 1.3;
+      position: relative;
+      z-index: 1;
+      letter-spacing: 0.02em;
+      text-transform: uppercase;
+    }
+    .book-title span {
+      color: var(--cyan);
+    }
+    .book-free {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--cyan);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      background: rgba(0,229,255,0.1);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 999px;
+      padding: 3px 10px;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Float anim on book */
+    .book-wrap {
+      animation: floatBook 4s ease-in-out infinite, fadeSlideDown 0.8s 0.25s ease both;
+    }
+    @keyframes floatBook {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-8px); }
+    }
+
+    /* ───── SOCIAL PROOF STRIP ───── */
+    .social-proof {
+      display: flex;
+      align-self: center; /* Centraliza junto com o form */
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 24px;
+      animation: fadeSlideDown 0.7s 0.3s ease both;
+    }
+    .avatars {
+      display: flex;
+    }
+    .avatar {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 2px solid var(--bg-deep);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      margin-left: -8px;
+    }
+    .avatar:first-child { margin-left: 0; }
+    .a1 { background: linear-gradient(135deg,#7c3aed,#4f46e5); }
+    .a2 { background: linear-gradient(135deg,#0891b2,#06b6d4); }
+    .a3 { background: linear-gradient(135deg,#059669,#10b981); }
+    .a4 { background: linear-gradient(135deg,#dc2626,#f97316); }
+    .proof-text {
+      font-size: 13px;
+      color: var(--text-mid);
+    }
+    .proof-text strong {
+      color: var(--text-hi);
+    }
+
+    /* ───── CARD FORM ───── */
+    .card {
+      width: 100%;
+      max-width: 500px; /* Mantém o formulário com tamanho normal */
+      align-self: center; /* Centraliza o card na página */
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px 24px;
+      box-shadow: var(--glow-cyan);
+      animation: fadeSlideDown 0.8s 0.35s ease both;
+    }
+
+    .card-title {
+      font-size: 17px;
+      font-weight: 700;
+      text-align: center;
+      margin-bottom: 6px;
+    }
+    .card-sub {
+      font-size: 13px;
+      color: var(--text-mid);
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    label {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-mid);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .field { margin-bottom: 16px; }
+
+    input {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid rgba(255,255,255,0.07);
+      border-radius: 12px;
+      padding: 14px 16px;
+      font-size: 15px;
+      color: var(--text-hi);
+      font-family: 'Inter', sans-serif;
+      outline: none;
+      transition: border 0.2s, box-shadow 0.2s;
+    }
+    input::placeholder { color: var(--text-lo); }
+    input:focus {
+      border-color: rgba(0,229,255,0.4);
+      box-shadow: 0 0 0 3px rgba(0,229,255,0.08);
+    }
+
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: linear-gradient(90deg, var(--cyan-dim), var(--cyan));
+      color: #050810;
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.15s, box-shadow 0.2s, filter 0.2s;
+      box-shadow: var(--glow-btn);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+    .btn-primary:active { transform: translateY(0); }
+
+    .privacy-note {
+      font-size: 11px;
+      color: var(--text-lo);
+      text-align: center;
+      margin-top: 14px;
+    }
+    .privacy-note span { color: var(--cyan); }
+
+    /* ───── DOWNLOAD SECTION (hidden initially) ───── */
+    #download-section {
+      display: none;
+      width: 100%;
+      animation: fadeSlideDown 0.7s ease both;
+    }
+    #download-section.visible { display: flex; flex-direction: column; align-items: center; }
+
+    .success-icon {
+      font-size: 56px;
+      margin-bottom: 16px;
+      filter: drop-shadow(0 0 20px rgba(0,229,255,0.5));
+      animation: popIn 0.5s cubic-bezier(0.34,1.56,0.64,1) both;
+    }
+    @keyframes popIn {
+      from { transform: scale(0.5); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+
+    .success-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    .success-sub {
+      font-size: 14px;
+      color: var(--text-mid);
+      text-align: center;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    .btn-download {
+      width: 100%;
+      max-width: 360px;
+      padding: 18px 24px;
+      background: linear-gradient(90deg, var(--purple-dim), var(--purple));
+      color: #fff;
+      font-size: 17px;
+      font-weight: 800;
+      border: none;
+      border-radius: 14px;
+      cursor: pointer;
+      box-shadow: 0 0 30px rgba(124,58,237,0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: transform 0.15s, filter 0.2s;
+      text-decoration: none;
+    }
+    .btn-download:hover {
+      transform: translateY(-2px);
+      filter: brightness(1.1);
+    }
+
+    .next-steps {
+      margin-top: 24px;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      width: 100%;
+    }
+    .next-steps h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--cyan);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+    .step-item:last-child { margin-bottom: 0; }
+    .step-num {
+      width: 22px;
+      height: 22px;
+      background: rgba(0,229,255,0.1);
+      border: 1px solid rgba(0,229,255,0.2);
+      border-radius: 50%;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--cyan);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-text {
+      font-size: 13px;
+      color: var(--text-mid);
+      line-height: 1.5;
+    }
+
+    /* ───── FEATURES ───── */
+    .features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      width: 100%;
+      margin-top: 20px;
+      animation: fadeSlideDown 0.8s 0.4s ease both;
+    }
+    .feat {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .feat-icon { font-size: 20px; }
+    .feat-text { font-size: 12px; color: var(--text-mid); line-height: 1.4; }
+    .feat-text strong { color: var(--text-hi); display: block; font-size: 13px; margin-bottom: 2px; }
+
+    /* ───── ANIMATIONS ───── */
+    @keyframes fadeSlideDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ───── SPINNER ───── */
+    .spinner {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(5,8,16,0.3);
+      border-top-color: var(--bg-deep);
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      display: none;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .loading .spinner { display: block; }
+    .loading .btn-text { display: none; }
+
+    /* ───── FOOTER ───── */
+    .footer {
+      margin-top: 60px;
+      align-self: center; /* Centraliza o rodapé */
+      font-size: 12px;
+      color: var(--text-lo);
+      text-align: center;
+      line-height: 1.8;
+      animation: fadeSlideDown 0.8s 0.5s ease both;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="grid-overlay"></div>
+
+  <div class="wrapper">
+
+    <!-- Badge -->
+    <div class="badge">Acesso Gratuito Disponível</div>
+
+    <!-- Headline -->
+    <h1 class="hero-headline">
+      <span>Sucesso</span> é a capacidade do ser humano alcançar seus objetivos na vida.<br/>
+      <span class="sub-part">sejam eles quais forem.</span>
+    </h1>
+    <p class="hero-sub" id="hero-sub">
+      Acesse agora o conteúdo exclusivo que vai te guiar nessa jornada.
+    </p>
+
+
+
+    <!-- Social Proof -->
+    <div class="social-proof">
+      <div class="avatars">
+        <div class="avatar a1">G</div>
+        <div class="avatar a2">R</div>
+        <div class="avatar a3">A</div>
+        <div class="avatar a4">M</div>
+      </div>
+      <p class="proof-text"><strong>+2.400 pessoas</strong> já acessaram este material</p>
+    </div>
+
+    <!-- FORM CARD -->
+    <div class="card" id="form-card">
+      <p class="card-title">Libere seu acesso</p>
+      <p class="card-sub">Falta pouco. Preencha abaixo para ter acesso ao <strong id="dynamic-pdf-name" style="color: var(--cyan);">seu material exclusivo</strong>.</p>
+
+      <form id="lead-form">
+        <div class="field">
+          <label for="nome">Seu nome</label>
+          <input type="text" id="nome" name="nome" placeholder="Como você quer ser chamado?" required />
+        </div>
+        <div class="field">
+          <label for="email">Seu melhor e-mail</label>
+          <input type="email" id="email" name="email" placeholder="voce@email.com" required />
+        </div>
+        <div class="field">
+          <label for="whatsapp">WhatsApp (com DDD)</label>
+          <input type="tel" id="whatsapp" name="whatsapp" placeholder="(11) 99999-9999" required />
+        </div>
+
+        <button type="submit" class="btn-primary" id="submit-btn">
+          <span class="btn-text">🔓 Quero Acessar Agora</span>
+          <div class="spinner"></div>
+        </button>
+      </form>
+
+      <p class="privacy-note">
+        🔒 Seus dados estão seguros. <span>Sem spam, jamais.</span><br/>
+        Você pode remover seu acesso quando quiser.
+      </p>
+    </div>
+
+    <!-- DOWNLOAD SECTION -->
+    <div id="download-section">
+      <div class="success-icon">✅</div>
+      <h2 class="success-title">Acesso Liberado!</h2>
+      <p class="success-sub" id="success-sub">
+        Seu material está pronto.<br/>
+        Clique abaixo para baixar agora mesmo.
+      </p>
+      <a href="#" id="download-btn" class="btn-download" download>
+        ⬇️ Baixar Meu Material Gratuito
+      </a>
+
+      <div class="next-steps">
+        <h4>📌 Próximos passos</h4>
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <p class="step-text">Baixe o material e salve em um lugar de fácil acesso.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <p class="step-text">Leia o capítulo 1 hoje. Apenas o primeiro.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <p class="step-text">Fique de olho no seu WhatsApp. Vou te enviar algo importante em breve.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Features -->
+    <div class="features" id="features">
+      <div class="feat">
+        <div class="feat-icon">⚡</div>
+        <div class="feat-text"><strong>Acesso Instantâneo</strong>Sem espera. Baixe agora.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🎯</div>
+        <div class="feat-text"><strong>Conteúdo Real</strong>Zero enrolação.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">🔒</div>
+        <div class="feat-text"><strong>100% Grátis</strong>Sem cartão. Sem truques.</div>
+      </div>
+      <div class="feat">
+        <div class="feat-icon">📱</div>
+        <div class="feat-text"><strong>Leia em qualquer</strong>dispositivo.</div>
+      </div>
+    </div>
+
+    <div class="footer">
+      © 2025 — Conteúdo exclusivo.<br/>
+      Acesso pessoal e intransferível.
+    </div>
+  </div>
+
+  <script type="module">
+    // Importando Firebase
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyCd1i6V0OJvdKEMUAkam25h25rt_pGhm6g",
+      authDomain: "sistema-op-marketing.firebaseapp.com",
+      projectId: "sistema-op-marketing",
+      storageBucket: "sistema-op-marketing.firebasestorage.app",
+      messagingSenderId: "414079073696",
+      appId: "1:414079073696:web:afe2702087524def5038c5",
+      measurementId: "G-CP91YD8C7Z"
+    };
+
+    // Inicializando Firebase e Firestore
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    // Variável para guardar o link do PDF puxado do banco
+    let pdfUrlAtivo = "#";
+
+    // ─── Busca a campanha ativa do Firestore ───
+    async function carregarCampanhaAtiva() {
+      try {
+        const campanhasRef = collection(db, "campanhas");
+        // Pega a última campanha criada
+        const q = query(campanhasRef, orderBy("criada_em", "desc"), limit(1));
+        const querySnapshot = await getDocs(q);
+        
+        if (!querySnapshot.empty) {
+          const dadosCampanha = querySnapshot.docs[0].data();
+          pdfUrlAtivo = dadosCampanha.pdf_url || "#";
+          
+          // Atualiza a tela com o nome dinâmico
+          const dynamicNameEl = document.getElementById("dynamic-pdf-name");
+          if (dynamicNameEl && dadosCampanha.titulo) {
+            dynamicNameEl.textContent = dadosCampanha.titulo;
+          }
+        } else {
+          // Fallback se o banco estiver vazio
+          console.log("Nenhuma campanha ativa encontrada.");
+        }
+      } catch (e) {
+        console.error("Erro ao carregar campanha:", e);
+      }
+    }
+
+    // Roda a busca logo que a página abre
+    carregarCampanhaAtiva();
+
+    // ─── Formata telefone ───
+    document.getElementById("whatsapp").addEventListener("input", function () {
+      let v = this.value.replace(/\D/g, "");
+      if (v.length <= 10) {
+        v = v.replace(/(\d{2})(\d{4})(\d{0,4})/, "($1) $2-$3");
+      } else {
+        v = v.replace(/(\d{2})(\d{5})(\d{0,4})/, "($1) $2-$3");
+      }
+      this.value = v;
+    });
+
+    // ─── Handle Submit ───
+    document.getElementById("lead-form").addEventListener("submit", async function(e) {
+      e.preventDefault();
+
+      const btn = document.getElementById("submit-btn");
+      btn.classList.add("loading");
+
+      const nome     = document.getElementById("nome").value.trim();
+      const email    = document.getElementById("email").value.trim();
+      const whatsapp = document.getElementById("whatsapp").value.trim();
+
+      try {
+        // Salva direto no Firestore na pasta 'leads'
+        await addDoc(collection(db, "leads"), {
+          nome: nome,
+          email: email,
+          whatsapp: whatsapp,
+          origem: "landing_page",
+          data_captura: serverTimestamp()
+        });
+
+        // Some com os elementos da tela inicial
+        document.getElementById("form-card").style.display = "none";
+        document.getElementById("features").style.display = "none";
+        document.getElementById("hero-sub").style.display = "none";
+
+        // Mostra a tela de sucesso
+        const section = document.getElementById("download-section");
+        section.classList.add("visible");
+
+        document.getElementById("success-sub").innerHTML =
+          `Tudo pronto, <strong>${nome}</strong>!<br/>Seu material está esperando por você.`;
+
+        // Coloca o link do Firebase no botão de baixar
+        document.getElementById("download-btn").href = pdfUrlAtivo;
+        
+      } catch (error) {
+        console.error("Erro ao salvar o lead:", error);
+        alert("Ocorreu um erro. Tente novamente.");
+      } finally {
+        btn.classList.remove("loading");
+      }
+    });
+  </script>
+</body>
+</html>
