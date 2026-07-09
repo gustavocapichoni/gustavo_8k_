@@ -718,8 +718,15 @@
         document.getElementById("features").style.display = "none";
         document.getElementById("hero-sub").style.display = "none";
 
-        // Dispara o e-mail via Google Apps Script em background
-        const scriptUrl = "https://script.google.com/macros/s/AKfycbw7v2vbcDjTvuYz2qMw17ShK-uys2PUAJyhdB_RcaXR0Rth-8qfhw0YbYC9L7olNfTs/exec";
+        // Sistema de rodízio de Google Apps Script para dobrar o limite de emails (200/dia)
+        const scriptUrls = [
+          "https://script.google.com/macros/s/AKfycbw7v2vbcDjTvuYz2qMw17ShK-uys2PUAJyhdB_RcaXR0Rth-8qfhw0YbYC9L7olNfTs/exec",
+          "https://script.google.com/macros/s/AKfycbx4byHtLerPlYwk8Bm0cuVhl3hxE9svBQXkHm-TuIwCvdqeaexFVPJoiGZxrjOrFWMsnA/exec",
+          "https://script.google.com/macros/s/AKfycbycvy2PGtNbRgzMKnVGwL6K_xXhfa-FS3jRNVfqkA-wntQIAJoDW4ZZCe2sgWfo0SlDCQ/exec"
+        ];
+        // Escolhe um dos scripts aleatoriamente para dividir a carga
+        const scriptUrl = scriptUrls[Math.floor(Math.random() * scriptUrls.length)];
+        
         fetch(scriptUrl, {
           method: "POST",
           mode: "no-cors",
