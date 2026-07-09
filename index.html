@@ -583,12 +583,9 @@
       <div class="success-icon">✅</div>
       <h2 class="success-title">Acesso Liberado!</h2>
       <p class="success-sub" id="success-sub">
-        Seu material está pronto.<br/>
-        Clique abaixo para baixar agora mesmo.
+        Seu material foi enviado para o seu e-mail.<br/>
+        Verifique sua caixa de entrada e, se não estiver lá, dê uma olhada na caixa de spam.
       </p>
-      <a href="#" id="download-btn" class="btn-download" download>
-        ⬇️ Baixar Meu Material Gratuito
-      </a>
 
       <div class="next-steps">
         <h4>📌 Próximos passos</h4>
@@ -721,15 +718,25 @@
         document.getElementById("features").style.display = "none";
         document.getElementById("hero-sub").style.display = "none";
 
+        // Dispara o e-mail via Google Apps Script em background
+        const scriptUrl = "https://script.google.com/macros/s/AKfycbw7v2vbcDjTvuYz2qMw17ShK-uys2PUAJyhdB_RcaXR0Rth-8qfhw0YbYC9L7olNfTs/exec";
+        fetch(scriptUrl, {
+          method: "POST",
+          mode: "no-cors",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({
+            nome: nome,
+            email: email,
+            tituloPdf: document.getElementById("dynamic-pdf-name").textContent || "Seu Material Exclusivo",
+            linkPdf: pdfUrlAtivo
+          })
+        }).catch(err => console.log("Erro silencioso no envio do email:", err));
+
         // Mostra a tela de sucesso
         const section = document.getElementById("download-section");
         section.classList.add("visible");
-
-        document.getElementById("success-sub").innerHTML =
-          `Tudo pronto, <strong>${nome}</strong>!<br/>Seu material está esperando por você.`;
-
-        // Coloca o link do Firebase no botão de baixar
-        document.getElementById("download-btn").href = pdfUrlAtivo;
         
       } catch (error) {
         console.error("Erro ao salvar o lead:", error);
