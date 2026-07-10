@@ -633,7 +633,7 @@
   <script type="module">
     // Importando Firebase
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+    import { getFirestore, collection, addDoc, getDocs, query, orderBy, limit, serverTimestamp, where } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
     const firebaseConfig = {
       apiKey: "AIzaSyCd1i6V0OJvdKEMUAkam25h25rt_pGhm6g",
@@ -703,16 +703,33 @@
       const email    = document.getElementById("email").value.trim();
       const whatsapp = document.getElementById("whatsapp").value.trim();
 
+      // Validação do WhatsApp (Brasil tem 10 ou 11 números com DDD)
+      const numZap = whatsapp.replace(/\D/g, "");
+      if (numZap.length < 10 || numZap.length > 11) {
+        alert("Por favor, insira um número de WhatsApp válido com DDD (ex: 11 99999-9999).");
+        btn.classList.remove("loading");
+        return;
+      }
+
       try {
-        // Salva direto no Firestore na pasta 'leads'
-        await addDoc(collection(db, "leads"), {
-          nome: nome,
-          email: email,
-          whatsapp: whatsapp,
-          origem: "landing_page",
-          data_captura: serverTimestamp(),
-          enviado_email: true // Marcando como true pois o Apps Script vai enviar na mesma hora
-        });
+        const leadsRef = collection(db, "leads");
+        const qEmail = query(leadsRef, where("email", "==", email));
+        const qZap = query(leadsRef, where("whatsapp", "==", whatsapp));
+        
+        const [snapEmail, snapZap] = await Promise.all([getDocs(qEmail), getDocs(qZap)]);
+        let leadJaExiste = !snapEmail.empty || !snapZap.empty;
+
+        if (!leadJaExiste) {
+          // Salva no banco apenas se não existir duplicado
+          await addDoc(leadsRef, {
+            nome: nome,
+            email: email,
+            whatsapp: whatsapp,
+            origem: "landing_page",
+            data_captura: serverTimestamp(),
+            enviado_email: true
+          });
+        }
 
         // Tenta enviar o e-mail via Google Apps Script, usando fallbacks em caso de erro de rede
         const gasUrls = [
@@ -734,7 +751,7 @@
                 method: 'POST',
                 mode: 'no-cors', // Evita erros de CORS no navegador
                 headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ email: email, name: nome })
+                body: JSON.stringify({ email: email, name: nome, link: pdfUrlAtivo })
               });
               enviadoComSucesso = true;
               break; // Sucesso! Interrompe as tentativas.
