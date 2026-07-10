@@ -736,8 +736,14 @@
           });
           console.log("Lead novo salvo no banco com sucesso!");
         } else {
-          console.log("Lead já existe no banco. Pulando o salvamento, mas enviando e-mail...");
-          alert("Parece que você já tem um cadastro com a gente! Acabamos de reenviar o material para o seu e-mail.");
+          console.log("Lead já existe no banco. Bloqueando o acesso...");
+          alert("Este E-mail ou WhatsApp já estão cadastrados em nosso sistema.");
+        }
+
+        if (leadJaExiste) {
+          // Limpa o formulário e bloqueia o processo (não envia e-mail)
+          document.getElementById("lead-form").reset();
+          return;
         }
 
         // Tenta enviar o e-mail via Google Apps Script, usando fallbacks em caso de erro de rede
@@ -773,12 +779,6 @@
               }
             }
           }
-        }
-
-        if (leadJaExiste) {
-          // Limpa o formulário e mantém o usuário na página inicial
-          document.getElementById("lead-form").reset();
-          return;
         }
 
         // Some com os elementos da tela inicial
