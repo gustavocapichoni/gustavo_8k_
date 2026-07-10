@@ -775,6 +775,12 @@
           }
         }
 
+        if (leadJaExiste) {
+          // Limpa o formulário e mantém o usuário na página inicial
+          document.getElementById("lead-form").reset();
+          return;
+        }
+
         // Some com os elementos da tela inicial
         document.getElementById("form-card").style.display = "none";
         document.getElementById("features").style.display = "none";
