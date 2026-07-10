@@ -733,9 +733,9 @@
 
         // Tenta enviar o e-mail via Google Apps Script, usando fallbacks em caso de erro de rede
         const gasUrls = [
-          "https://script.google.com/macros/s/AKfycbyulwxIa_84L6_0QKGWO3-JJofa_JWVAiSlk1TVle56ZzgWgSSWw49pqGh_X-TZp4CY/exec",
-          "https://script.google.com/macros/s/AKfycbzOGmpcuiiQHBlwHkj4wYokY_QTgaEIt5DrbjXZORAWSs42leAt3IyEtjCT0WHKuwhu/exec",
-          "https://script.google.com/macros/s/AKfycbx1OQMRS7dOb2bygUTleTSTvxJ_Xx77iX779ez-P7h_4qUM2JsCHCj-PfD1XswOHdxkhQ/exec"
+          "https://script.google.com/macros/s/AKfycbwIYRlqRu_7wMdfB1YNhBcx6kzIBnvRg8zhE9QgrLkpS9CHsY5A-jOuqJ30cATDGNvkLA/exec", // Conta 1
+          "https://script.google.com/macros/s/AKfycbzOGmpcuiiQHBlwHkj4wYokY_QTgaEIt5DrbjXZORAWSs42leAt3IyEtjCT0WHKuwhu/exec", // Conta 2
+          "https://script.google.com/macros/s/AKfycbyulwxIa_84L6_0QKGWO3-JJofa_JWVAiSlk1TVle56ZzgWgSSWw49pqGh_X-TZp4CY/exec"  // Conta 3
         ];
 
         const sleep = ms => new Promise(r => setTimeout(r, ms));
