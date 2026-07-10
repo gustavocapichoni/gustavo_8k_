@@ -717,12 +717,14 @@
       try {
         const leadsRef = collection(db, "leads");
         const qEmail = query(leadsRef, where("email", "==", email));
+        // Checa pelo número do Zap formatado E também pelo número limpo só pra garantir
         const qZap = query(leadsRef, where("whatsapp", "==", whatsapp));
+        const qZapLimpo = query(leadsRef, where("whatsapp_limpo", "==", numZap));
         
-        const [snapEmail, snapZap] = await Promise.all([getDocs(qEmail), getDocs(qZap)]);
-        let leadJaExiste = !snapEmail.empty || !snapZap.empty;
+        const [snapEmail, snapZap, snapZapLimpo] = await Promise.all([getDocs(qEmail), getDocs(qZap), getDocs(qZapLimpo)]);
+        let leadJaExiste = !snapEmail.empty || !snapZap.empty || !snapZapLimpo.empty;
 
-        console.log("Checagem de Duplicados -> Email Existe?", !snapEmail.empty, "Zap Existe?", !snapZap.empty);
+        console.log("Checagem de Duplicados -> Email Existe?", !snapEmail.empty, "Zap Existe?", (!snapZap.empty || !snapZapLimpo.empty));
 
         if (!leadJaExiste) {
           // Salva no banco apenas se não existir duplicado
@@ -730,6 +732,7 @@
             nome: nome,
             email: email,
             whatsapp: whatsapp,
+            whatsapp_limpo: numZap, // Salva o número puro para checagens futuras à prova de falhas
             origem: "landing_page",
             data_captura: serverTimestamp(),
             enviado_email: true
