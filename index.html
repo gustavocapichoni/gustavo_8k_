@@ -737,6 +737,7 @@
           console.log("Lead novo salvo no banco com sucesso!");
         } else {
           console.log("Lead já existe no banco. Pulando o salvamento, mas enviando e-mail...");
+          alert("Parece que você já tem um cadastro com a gente! Acabamos de reenviar o material para o seu e-mail.");
         }
 
         // Tenta enviar o e-mail via Google Apps Script, usando fallbacks em caso de erro de rede
