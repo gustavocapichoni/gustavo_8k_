@@ -711,8 +711,29 @@
           whatsapp: whatsapp,
           origem: "landing_page",
           data_captura: serverTimestamp(),
-          enviado_mailerlite: false
+          enviado_email: true // Marcando como true pois o Apps Script vai enviar na mesma hora
         });
+
+        // Tenta enviar o e-mail via Google Apps Script, usando fallbacks em caso de erro de rede
+        const gasUrls = [
+          "https://script.google.com/macros/s/AKfycbyulwxIa_84L6_0QKGWO3-JJofa_JWVAiSlk1TVle56ZzgWgSSWw49pqGh_X-TZp4CY/exec",
+          "https://script.google.com/macros/s/AKfycbzOGmpcuiiQHBlwHkj4wYokY_QTgaEIt5DrbjXZORAWSs42leAt3IyEtjCT0WHKuwhu/exec",
+          "https://script.google.com/macros/s/AKfycbx1OQMRS7dOb2bygUTleTSTvxJ_Xx77iX779ez-P7h_4qUM2JsCHCj-PfD1XswOHdxkhQ/exec"
+        ];
+
+        for (const url of gasUrls) {
+          try {
+            await fetch(url, {
+              method: 'POST',
+              mode: 'no-cors', // Evita erros de CORS no navegador
+              headers: { 'Content-Type': 'text/plain' },
+              body: JSON.stringify({ email: email, name: nome })
+            });
+            break; // Se a requisição foi feita com sucesso, interrompe o loop e não tenta os de emergência
+          } catch (e) {
+            console.warn("Falha ao enviar pelo script principal, tentando o reserva...", e);
+          }
+        }
 
         // Some com os elementos da tela inicial
         document.getElementById("form-card").style.display = "none";
