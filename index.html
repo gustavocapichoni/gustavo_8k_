@@ -721,17 +721,31 @@
           "https://script.google.com/macros/s/AKfycbx1OQMRS7dOb2bygUTleTSTvxJ_Xx77iX779ez-P7h_4qUM2JsCHCj-PfD1XswOHdxkhQ/exec"
         ];
 
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+        let enviadoComSucesso = false;
+
         for (const url of gasUrls) {
-          try {
-            await fetch(url, {
-              method: 'POST',
-              mode: 'no-cors', // Evita erros de CORS no navegador
-              headers: { 'Content-Type': 'text/plain' },
-              body: JSON.stringify({ email: email, name: nome })
-            });
-            break; // Se a requisição foi feita com sucesso, interrompe o loop e não tenta os de emergência
-          } catch (e) {
-            console.warn("Falha ao enviar pelo script principal, tentando o reserva...", e);
+          if (enviadoComSucesso) break;
+          
+          // Tenta 3 vezes em cada URL antes de pular para a próxima
+          for (let tentativa = 1; tentativa <= 3; tentativa++) {
+            try {
+              await fetch(url, {
+                method: 'POST',
+                mode: 'no-cors', // Evita erros de CORS no navegador
+                headers: { 'Content-Type': 'text/plain' },
+                body: JSON.stringify({ email: email, name: nome })
+              });
+              enviadoComSucesso = true;
+              break; // Sucesso! Interrompe as tentativas.
+            } catch (e) {
+              console.warn(`Falha na tentativa ${tentativa} da URL atual...`);
+              if (tentativa < 3) {
+                await sleep(1500); // Espera 1.5s antes da próxima tentativa
+              } else {
+                console.warn("As 3 tentativas falharam. Pulando para o script reserva...");
+              }
+            }
           }
         }
 
