@@ -700,7 +700,7 @@
       btn.classList.add("loading");
 
       const nome     = document.getElementById("nome").value.trim();
-      const email    = document.getElementById("email").value.trim();
+      const email    = document.getElementById("email").value.trim().toLowerCase();
       const whatsapp = document.getElementById("whatsapp").value.trim();
 
       // Validação do WhatsApp (Brasil tem 10 ou 11 números com DDD)
@@ -711,6 +711,9 @@
         return;
       }
 
+      // Desativa o botão para impedir "duplo clique"
+      btn.disabled = true;
+
       try {
         const leadsRef = collection(db, "leads");
         const qEmail = query(leadsRef, where("email", "==", email));
@@ -718,6 +721,8 @@
         
         const [snapEmail, snapZap] = await Promise.all([getDocs(qEmail), getDocs(qZap)]);
         let leadJaExiste = !snapEmail.empty || !snapZap.empty;
+
+        console.log("Checagem de Duplicados -> Email Existe?", !snapEmail.empty, "Zap Existe?", !snapZap.empty);
 
         if (!leadJaExiste) {
           // Salva no banco apenas se não existir duplicado
@@ -729,6 +734,9 @@
             data_captura: serverTimestamp(),
             enviado_email: true
           });
+          console.log("Lead novo salvo no banco com sucesso!");
+        } else {
+          console.log("Lead já existe no banco. Pulando o salvamento, mas enviando e-mail...");
         }
 
         // Tenta enviar o e-mail via Google Apps Script, usando fallbacks em caso de erro de rede
