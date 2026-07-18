@@ -739,14 +739,7 @@
           });
           console.log("Lead novo salvo no banco com sucesso!");
         } else {
-          console.log("Lead já existe no banco. Bloqueando o acesso...");
-          alert("Este E-mail ou WhatsApp já estão cadastrados em nosso sistema.");
-        }
-
-        if (leadJaExiste) {
-          // Limpa o formulário e bloqueia o processo (não envia e-mail)
-          document.getElementById("lead-form").reset();
-          return;
+          console.log("Lead já existe no banco. Pulando cadastro para evitar duplicatas, mas enviando o material atualizado...");
         }
 
         // Tenta enviar o e-mail via Google Apps Script, usando fallbacks em caso de erro de rede
