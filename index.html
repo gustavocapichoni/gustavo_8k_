@@ -758,11 +758,21 @@
           // Tenta 3 vezes em cada URL antes de pular para a próxima
           for (let tentativa = 1; tentativa <= 3; tentativa++) {
             try {
+              let tituloCampanha = "Seu Material Exclusivo";
+              const titleEl = document.getElementById("dynamic-pdf-name");
+              if (titleEl && titleEl.textContent) {
+                tituloCampanha = titleEl.textContent;
+              }
               await fetch(url, {
                 method: 'POST',
                 mode: 'no-cors', // Evita erros de CORS no navegador
                 headers: { 'Content-Type': 'text/plain' },
-                body: JSON.stringify({ email: email, name: nome, link: pdfUrlAtivo })
+                body: JSON.stringify({ 
+                  email: email, 
+                  nome: nome, 
+                  linkPdf: pdfUrlAtivo, 
+                  tituloPdf: tituloCampanha 
+                })
               });
               enviadoComSucesso = true;
               break; // Sucesso! Interrompe as tentativas.
