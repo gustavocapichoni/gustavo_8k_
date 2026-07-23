@@ -514,6 +514,40 @@
       line-height: 1.8;
       animation: fadeSlideDown 0.8s 0.5s ease both;
     }
+
+    /* ───── INSTAGRAM LOGO (Superior Direito) ───── */
+    .instagram-logo-container {
+      position: absolute;
+      top: 40px;
+      right: 40px;
+      z-index: 10;
+      animation: fadeSlideDown 0.6s ease both;
+    }
+    .instagram-logo {
+      width: 90px;
+      height: 90px;
+      object-fit: cover;
+      border-radius: 50%;
+      border: 2px solid #fab937;
+      box-shadow: 0 0 15px rgba(250, 185, 55, 0.4);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      cursor: pointer;
+    }
+    .instagram-logo:hover {
+      transform: scale(1.08);
+      box-shadow: 0 0 25px rgba(250, 185, 55, 0.7);
+    }
+
+    @media (max-width: 768px) {
+      .instagram-logo-container {
+        top: 20px;
+        right: 20px;
+      }
+      .instagram-logo {
+        width: 60px;
+        height: 60px;
+      }
+    }
   </style>
 </head>
 
@@ -521,6 +555,9 @@
   <div class="grid-overlay"></div>
 
   <div class="wrapper">
+    <div class="instagram-logo-container">
+      <img src="foto_perfil.png" alt="Instagram Profile" class="instagram-logo" />
+    </div>
 
     <!-- Badge -->
     <div class="badge">Acesso Gratuito Disponível</div>
